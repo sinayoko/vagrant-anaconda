@@ -3,6 +3,7 @@
 
 Vagrant.configure(2) do |config|
   config.vm.box = "hashicorp/precise32"
+  config.vm.network "forwarded_port", guest: 8888, host: 8888
   config.vm.provision "shell", inline: <<-SHELL
 wget https://3230d63b5fc54e62148e-c95ac804525aac4b6dba79b00b39d1d3.ssl.cf1.rackcdn.com/Anaconda-2.2.0-Linux-x86.sh
 anaconda=Anaconda-2.2.0-Linux-x86.sh
