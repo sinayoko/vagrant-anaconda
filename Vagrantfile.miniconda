@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "hashicorp/precise64"
+  config.vm.network "forwarded_port", guest: 8888, host: 8888
+  config.vm.provision "shell", inline: <<-SHELL
+anaconda=Miniconda-latest-Linux-x86_64.sh
+# anaconda=Anaconda-2.2.0-Linux-x86.sh
+cd /vagrant
+echo -e "\n\nDownloading Anaconda installer. This may take more than a few minutes."
+wget -q -o /dev/null - https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+if [ -s $anaconda ]
+then
+  chmod +x $anaconda
+  ./$anaconda -b -p /opt/anaconda
+  cat >> /home/vagrant/.bashrc << END
+  # For anaconda
+  PATH=/opt/anaconda/bin:$PATH
+END
+else
+  echo "ERROR: Anaconda installer is not found"
+fi
+  SHELL
+end
